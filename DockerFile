@@ -4,8 +4,9 @@ FROM dart:stable
 # Set the working directory in the container
 WORKDIR /app
 
-# Install dart_frog globally
+# Install dart_frog globally and update the PATH
 RUN dart pub global activate dart_frog
+ENV PATH="$PATH:/root/.pub-cache/bin"  
 
 # Copy all project files into the container
 COPY . .
