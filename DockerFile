@@ -4,15 +4,20 @@ FROM dart:stable
 # Set the working directory in the container
 WORKDIR /app
 
+# Install dart_frog globally
+RUN dart pub global activate dart_frog
+
 # Copy all project files into the container
 COPY . .
 
-# Install dependencies and build the project
+# Install dependencies
 RUN dart pub get
-RUN dart_frog build  # Build the project for production
+
+# Build the project for production
+RUN dart_frog build  # This will build the Dart Frog app
 
 # Expose the default Dart Frog port (8080)
 EXPOSE 8080
 
 # Run the server from the router/ directory (assuming the entry file is router/index.dart)
-CMD ["dart", "run", "router/user/index.dart"]  # Adjust this path based on your setup
+CMD ["dart", "run", "router/index.dart"]  # Adjust this path based on your setup
