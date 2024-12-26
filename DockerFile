@@ -1,0 +1,14 @@
+# Use the Dart stable image
+FROM dart:stable
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the production build files into the container
+COPY build/ .
+
+# Expose the default Dart Frog port (8080)
+EXPOSE 8080
+
+# Run the server
+CMD ["dart", "run", "bin/server.dart"]
