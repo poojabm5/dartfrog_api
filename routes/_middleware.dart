@@ -2,15 +2,6 @@ import 'package:dart_frog/dart_frog.dart';
 import 'package:my_first/src/generated/prisma/prisma_client.dart';
 import 'package:my_first/user_repositary.dart';
 
-// Handler middleware(Handler handler) {
-//   return (context) {
-//     print('after');
-//     final user = handler(context);
-//     print('before');
-//     return user;
-//   };
-// }
-
 Handler middleware(Handler handler) {
   return handler.use(requestLogger()).use(_provideUserrepo());
 }

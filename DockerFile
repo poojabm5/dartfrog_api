@@ -1,20 +1,27 @@
-# Use Dart SDK base image
+# Use a minimal base image (Alpine is lightweight)
 FROM dart:stable AS build
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the project files to the working directory
-COPY . .
-
-# Get the dependencies
+# Copy only necessary files first
+COPY pubspec.* ./
 RUN dart pub get
 
-# Build the project
-RUN dart_frog build
+# Copy the source code and compile
+COPY . .
+RUN dart compile exe bin/server.dart -o bin/server
 
-# Expose the default port
+# -------- STAGE 2: Minimal runtime image --------
+FROM alpine:latest
+
+# Install necessary dependencies like Dart runtime and other system libraries
+RUN apk add --no-cache \
+    dart \
+    bash
+
+COPY --from=build /app/bin/server /app/bin/server
+
+# Expose port (if required)
 EXPOSE 8080
 
-# Command to run the API
-CMD ["dart", "frogs", "serve"]
+ENTRYPOINT ["/app/bin/server"]
